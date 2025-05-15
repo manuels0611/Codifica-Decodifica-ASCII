@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="it" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codifica e Decodifica in ASCII</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {}
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    .toggle-checkbox:checked {
+      @apply right-0 border-gray-700;
+      right: 0;
+    }
+    .toggle-checkbox:checked + .toggle-label {
+      @apply bg-gray-700;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-rose-50 to-teal-50 p-4 md:p-8 transition-colors duration-200 dark:bg-gray-900 dark:from-gray-900 dark:to-gray-800">
+  <div class="max-w-4xl mx-auto">
+    <header class="flex justify-between items-center mb-8">
+      <h1 class="text-3xl font-semibold text-gray-800 dark:text-gray-100">CODIFICA E DECODIFICA IN ASCII</h1>
+      
+      <!-- Dark Mode Toggle -->
+      <div class="flex items-center">
+        <span class="mr-2 text-gray-700 dark:text-gray-300">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" />
+          </svg>
+        </span>
+        <div class="relative inline-block w-10 mr-2 align-middle select-none">
+          <input type="checkbox" id="themeToggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+          <label for="themeToggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+        </div>
+        <span class="text-gray-700 dark:text-gray-300">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+          </svg>
+        </span>
+      </div>
+    </header>
+    
+    <div class="space-y-6">
+      <!-- Codifica testo in ASCII -->
+      <div class="shadow-md rounded-lg overflow-hidden bg-white dark:bg-gray-800">
+        <div class="bg-rose-100 p-4 dark:bg-rose-900">
+          <h2 class="text-xl text-gray-800 font-semibold dark:text-gray-100">Codifica testo in ASCII</h2>
+        </div>
+        <div class="p-6">
+          <form id="encodeForm" class="space-y-4">
+            <div>
+              <input 
+                type="text" 
+                id="textInput" 
+                placeholder="Inserisci il testo da codificare" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              >
+            </div>
+            <button 
+              type="submit" 
+              class="w-full py-2 px-4 bg-gray-600 text-white font-medium rounded-md shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 dark:bg-gray-700 dark:hover:bg-gray-600"
+            >
+              Codifica
+            </button>
+          </form>
+          
+          <div id="asciiResults" class="mt-4 overflow-x-auto hidden">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead class="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">Carattere</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">Decimale (ASCII)</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">Binario (8-bit)</th>
+                </tr>
+              </thead>
+              <tbody id="asciiResultsBody" class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700 dark:text-gray-300"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decodifica da Decimale -->
+      <div class="shadow-md rounded-lg overflow-hidden bg-white dark:bg-gray-800">
+        <div class="bg-blue-100 p-4 dark:bg-blue-900">
+          <h2 class="text-xl text-gray-800 font-semibold dark:text-gray-100">Decodifica da Decimale</h2>
+        </div>
+        <div class="p-6">
+          <form id="decodeDecimalForm" class="space-y-4">
+            <div>
+              <input 
+                type="text" 
+                id="decimalInput" 
+                placeholder="Inserisci valori decimali separati da spazi" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              >
+            </div>
+            <button 
+              type="submit" 
+              class="w-full py-2 px-4 bg-gray-600 text-white font-medium rounded-md shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 dark:bg-gray-700 dark:hover:bg-gray-600"
+            >
+              Decodifica
+            </button>
+          </form>
+          
+          <div id="decimalResult" class="mt-4 p-4 bg-gray-50 rounded-lg hidden dark:bg-gray-700">
+            <h3 class="text-sm font-medium text-gray-500 mb-1 dark:text-gray-300">Testo Decodificato:</h3>
+            <p id="decimalResultText" class="text-lg font-medium dark:text-white"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decodifica da Binario -->
+      <div class="shadow-md rounded-lg overflow-hidden bg-white dark:bg-gray-800">
+        <div class="bg-green-100 p-4 dark:bg-green-900">
+          <h2 class="text-xl text-gray-800 font-semibold dark:text-gray-100">Decodifica da Binario</h2>
+        </div>
+        <div class="p-6">
+          <form id="decodeBinaryForm" class="space-y-4">
+            <div>
+              <input 
+                type="text" 
+                id="binaryInput" 
+                placeholder="Inserisci valori binari separati da spazi" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              >
+            </div>
+            <button 
+              type="submit" 
+              class="w-full py-2 px-4 bg-gray-600 text-white font-medium rounded-md shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 dark:bg-gray-700 dark:hover:bg-gray-600"
+            >
+              Decodifica
+            </button>
+          </form>
+          
+          <div id="binaryResult" class="mt-4 p-4 bg-gray-50 rounded-lg hidden dark:bg-gray-700">
+            <h3 class="text-sm font-medium text-gray-500 mb-1 dark:text-gray-300">Testo Decodificato:</h3>
+            <p id="binaryResultText" class="text-lg font-medium dark:text-white"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Dark mode toggle
+    const themeToggle = document.getElementById('themeToggle');
+    
+    // Check for saved theme preference or use the system preference
+    if (localStorage.getItem('theme') === 'dark' || 
+        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+      themeToggle.checked = true;
+    } else {
+      document.documentElement.classList.remove('dark');
+      themeToggle.checked = false;
+    }
+    
+    // Add toggle event listener
+    themeToggle.addEventListener('change', function() {
+      if (this.checked) {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      }
+    });
+    
+    // Codifica testo in ASCII
+    document.getElementById('encodeForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const textInput = document.getElementById('textInput').value;
+      const resultsBody = document.getElementById('asciiResultsBody');
+      const resultsContainer = document.getElementById('asciiResults');
+      
+      // Pulisci i risultati precedenti
+      resultsBody.innerHTML = '';
+      
+      if (textInput) {
+        // Crea una riga per ogni carattere
+        for (let i = 0; i < textInput.length; i++) {
+          const char = textInput[i];
+          const decimal = char.charCodeAt(0);
+          const binary = decimal.toString(2).padStart(8, '0');
+          
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td class="px-6 py-4 whitespace-nowrap">${char}</td>
+            <td class="px-6 py-4 whitespace-nowrap">${decimal}</td>
+            <td class="px-6 py-4 whitespace-nowrap font-mono">${binary}</td>
+          `;
+          
+          resultsBody.appendChild(row);
+        }
+        
+        resultsContainer.classList.remove('hidden');
+      }
+    });
+    
+    // Decodifica da Decimale
+    document.getElementById('decodeDecimalForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const decimalInput = document.getElementById('decimalInput').value;
+      const resultText = document.getElementById('decimalResultText');
+      const resultContainer = document.getElementById('decimalResult');
+      
+      try {
+        const decimals = decimalInput.trim().split(/\s+/).map(Number);
+        const result = decimals.map(decimal => String.fromCharCode(decimal)).join('');
+        
+        resultText.textContent = result;
+        resultContainer.classList.remove('hidden');
+      } catch (error) {
+        resultText.textContent = 'Errore: Inserisci valori decimali validi';
+        resultContainer.classList.remove('hidden');
+      }
+    });
+    
+    // Decodifica da Binario
+    document.getElementById('decodeBinaryForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const binaryInput = document.getElementById('binaryInput').value;
+      const resultText = document.getElementById('binaryResultText');
+      const resultContainer = document.getElementById('binaryResult');
+      
+      try {
+        const binaries = binaryInput.trim().split(/\s+/);
+        const result = binaries
+          .map(binary => String.fromCharCode(parseInt(binary, 2)))
+          .join('');
+        
+        resultText.textContent = result;
+        resultContainer.classList.remove('hidden');
+      } catch (error) {
+        resultText.textContent = 'Errore: Inserisci valori binari validi';
+        resultContainer.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
